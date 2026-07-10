@@ -1795,7 +1795,7 @@
           <!-- Video card 1 -->
           <div class="video-card" id="video-card-1" tabindex="0" role="button"
             aria-label="Play Luka &amp; Tinatin wedding film" data-video="https://youtu.be/bs9f8L_O0sU">
-            <img class="video-thumbnail" src="images/luka_tinatin.jpg" alt="Luka and Tinatin wedding film thumbnail"
+            <img class="video-thumbnail" src="images/luka_tinatin.png" alt="Luka and Tinatin wedding film thumbnail"
               loading="lazy" />
             <div class="play-overlay">
               <div class="play-btn">
@@ -2304,10 +2304,19 @@
         if (vidId) {
           videoPlaceholder.style.display = 'none';
           
-          let ytMatch = vidId.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
-          if (ytMatch && ytMatch[1]) {
+          let ytId = null;
+          if (vidId.includes('youtu.be/')) {
+            ytId = vidId.split('youtu.be/')[1].split('?')[0];
+          } else if (vidId.includes('watch?v=')) {
+            ytId = vidId.split('watch?v=')[1].split('&')[0];
+          } else if (vidId.includes('embed/')) {
+            ytId = vidId.split('embed/')[1].split('?')[0];
+          }
+          
+          if (ytId && ytId.length >= 11) {
+            ytId = ytId.substring(0, 11);
             currentVideo = document.createElement('iframe');
-            currentVideo.src = `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&rel=0`;
+            currentVideo.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`;
             currentVideo.setAttribute('frameborder', '0');
             currentVideo.setAttribute('allow', 'autoplay; fullscreen');
             currentVideo.setAttribute('allowfullscreen', 'true');

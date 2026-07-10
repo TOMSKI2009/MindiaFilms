@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <script>
+    let v1 = "https://youtu.be/a02ACCvLT4o";
+    let v2 = "https://youtu.be/bs9f8L_O0sU";
+    let v3 = "https://youtu.be/0K9U7gRnPQA";
+    let regex = /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/;
+    console.log("V1:", v1.match(regex));
+    console.log("V2:", v2.match(regex));
+    console.log("V3:", v3.match(regex));
+    document.body.innerHTML += "<p>V1: " + !!v1.match(regex) + "</p>";
+    document.body.innerHTML += "<p>V2: " + !!v2.match(regex) + "</p>";
+    document.body.innerHTML += "<p>V3: " + !!v3.match(regex) + "</p>";
+  </script>
+</body>
+</html>
