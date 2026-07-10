@@ -1055,7 +1055,8 @@
       max-width: 900px;
     }
 
-    .video-modal-inner video {
+    .video-modal-inner video,
+    .video-modal-inner iframe {
       width: 100%;
       aspect-ratio: 16/9;
       border-radius: 6px;
@@ -1779,7 +1780,7 @@
         <div class="video-grid reveal">
           <!-- Video card 0 (New Video) -->
           <div class="video-card" id="video-card-0" tabindex="0" role="button"
-            aria-label="Play Nino &amp; Gurami wedding film" data-video="videos/nino_final_klip.mp4">
+            aria-label="Play Nino &amp; Gurami wedding film" data-video="https://youtu.be/a02ACCvLT4o">
             <img class="video-thumbnail" src="images/nino_gurami.jpg" alt="Nino and Gurami wedding film thumbnail"
               loading="lazy" />
             <div class="play-overlay">
@@ -1793,8 +1794,8 @@
           </div>
           <!-- Video card 1 -->
           <div class="video-card" id="video-card-1" tabindex="0" role="button"
-            aria-label="Play Niko &amp; Nino wedding film" data-video="videos/klip.mp4">
-            <img class="video-thumbnail" src="images/niko-and-nino/7n1a2148.jpg" alt="Niko and Nino wedding film thumbnail"
+            aria-label="Play Luka &amp; Tinatin wedding film" data-video="https://youtu.be/bs9f8L_O0sU">
+            <img class="video-thumbnail" src="images/luka_tinatin.jpg" alt="Luka and Tinatin wedding film thumbnail"
               loading="lazy" />
             <div class="play-overlay">
               <div class="play-btn">
@@ -1802,13 +1803,13 @@
                   <polygon points="5 3 19 12 5 21 5 3" />
                 </svg>
               </div>
-              <span class="video-card-label">Niko &amp; Nino</span>
+              <span class="video-card-label">Luka &amp; Tinatin</span>
             </div>
           </div>
           <!-- Video card 2 -->
           <div class="video-card" id="video-card-2" tabindex="0" role="button"
-            aria-label="Play Nini &amp; Misho wedding film" data-video="videos/klip2.mp4">
-            <img class="video-thumbnail" src="images/nini_misho.jpg" alt="Nini and Misho wedding film thumbnail"
+            aria-label="Play Tornike &amp; Laliko wedding film" data-video="https://youtu.be/0K9U7gRnPQA">
+            <img class="video-thumbnail" src="images/nini_misho.jpg" alt="Tornike and Laliko wedding film thumbnail"
               loading="lazy" />
             <div class="play-overlay">
               <div class="play-btn">
@@ -1816,7 +1817,7 @@
                   <polygon points="5 3 19 12 5 21 5 3" />
                 </svg>
               </div>
-              <span class="video-card-label">Nini &amp; Misho</span>
+              <span class="video-card-label">Tornike &amp; Laliko</span>
             </div>
           </div>
         </div>
@@ -2289,7 +2290,7 @@
       document.body.style.top = '';
       document.body.style.width = '';
       if (currentVideo) {
-        currentVideo.pause();
+        if (currentVideo.tagName === 'VIDEO') currentVideo.pause();
         currentVideo.src = '';
         currentVideo.remove();
         currentVideo = null;
@@ -2302,11 +2303,22 @@
         const vidId = card.dataset.video;
         if (vidId) {
           videoPlaceholder.style.display = 'none';
-          currentVideo = document.createElement('video');
-          currentVideo.src = vidId;
-          currentVideo.controls = true;
-          currentVideo.autoplay = true;
-          videoModalInner.appendChild(currentVideo);
+          
+          let ytMatch = vidId.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+          if (ytMatch && ytMatch[1]) {
+            currentVideo = document.createElement('iframe');
+            currentVideo.src = `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&rel=0`;
+            currentVideo.setAttribute('frameborder', '0');
+            currentVideo.setAttribute('allow', 'autoplay; fullscreen');
+            currentVideo.setAttribute('allowfullscreen', 'true');
+            videoModalInner.appendChild(currentVideo);
+          } else {
+            currentVideo = document.createElement('video');
+            currentVideo.src = vidId;
+            currentVideo.controls = true;
+            currentVideo.autoplay = true;
+            videoModalInner.appendChild(currentVideo);
+          }
         } else {
           videoPlaceholder.style.display = 'flex';
         }
