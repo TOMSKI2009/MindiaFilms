@@ -15,19 +15,19 @@ async function generateFavicons() {
     { name: 'apple-touch-icon.png', size: 180 }
   ];
 
+  const trimmedBuffer = await sharp(sourceImg).trim().toBuffer();
+  const metadata = await sharp(trimmedBuffer).metadata();
+  const scale = 1.2; // 120% zoom
+  const extractWidth = Math.floor(metadata.width / scale);
+  const extractHeight = Math.floor(metadata.height / scale);
+  const left = Math.floor((metadata.width - extractWidth) / 2);
+  const top = Math.floor((metadata.height - extractHeight) / 2);
+
   for (const item of sizes) {
     const outPath = path.join(outDir, item.name);
-    const innerSize = Math.max(1, Math.round(item.size * 0.95));
-    await sharp(sourceImg)
-      .trim()
-      .resize(innerSize, innerSize, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
-      .extend({
-        top: Math.floor((item.size - innerSize) / 2),
-        bottom: Math.ceil((item.size - innerSize) / 2),
-        left: Math.floor((item.size - innerSize) / 2),
-        right: Math.ceil((item.size - innerSize) / 2),
-        background: { r: 0, g: 0, b: 0, alpha: 0 }
-      })
+    await sharp(trimmedBuffer)
+      .extract({ left, top, width: extractWidth, height: extractHeight })
+      .resize(item.size, item.size, { fit: 'cover', background: { r: 0, g: 0, b: 0, alpha: 0 } })
       .toFile(outPath);
     console.log(`Generated ${item.name}`);
   }
