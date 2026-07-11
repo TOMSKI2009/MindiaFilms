@@ -1,0 +1,26 @@
+{
+  "name": "mindiaaas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "optimize": "node scripts/optimize.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TOMSKI2009/MindiaFilms.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/TOMSKI2009/MindiaFilms/issues"
+  },
+  "homepage": "https://github.com/TOMSKI2009/MindiaFilms#readme",
+  "dependencies": {
+    "sharp": "^0.35.3"
+  }
+}
