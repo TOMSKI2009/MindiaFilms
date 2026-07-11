@@ -17,7 +17,7 @@ async function generateFavicons() {
 
   for (const item of sizes) {
     const outPath = path.join(outDir, item.name);
-    const innerSize = Math.max(1, Math.round(item.size * 0.8));
+    const innerSize = Math.max(1, Math.round(item.size * 0.95));
     await sharp(sourceImg)
       .trim()
       .resize(innerSize, innerSize, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
