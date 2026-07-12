@@ -45,10 +45,7 @@ async function optimizeImages() {
 
     // Generate responsive WebP sizes
     for (const size of SIZES) {
-      // Don't upscale
-      if (metadata.width && size.width > metadata.width && size.name !== 'large') {
-        continue;
-      }
+      // Always generate expected sizes for srcset compatibility, capping at original width.
       
       const resizeWidth = metadata.width && metadata.width < size.width ? metadata.width : size.width;
       const outPath = path.join(dir, `${basename}-${size.name}.webp`);
